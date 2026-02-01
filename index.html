@@ -30,9 +30,10 @@
 
         h1 { color: #ff4d6d; font-size: 1.8rem; margin-bottom: 15px; }
         
+        /* Locked state styling */
         #locked-section h2 { color: #ff4d6d; font-style: italic; }
         #open-btn {
-            display: none;
+            display: none; /* Hidden until Feb 14 */
             margin-top: 20px;
             background-color: #ff4d6d;
             color: white;
@@ -50,6 +51,7 @@
             100% { transform: scale(1); }
         }
 
+        /* Proposal state styling */
         #quiz-section { display: none; }
         #main-photo { width: 100%; border-radius: 15px; margin-bottom: 15px; }
 
@@ -64,8 +66,9 @@
 
         button { padding: 10px 25px; font-size: 1.1rem; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; }
         #yesBtn { background-color: #ff4d6d; color: white; }
-        #noBtn { background-color: #ffb3c1; color: #ff4d6d; position: absolute; }
+        #noBtn { background-color: #ffb3c1; color: #ff4d6d; position: absolute; left: 160px; }
 
+        /* Animation & Countdown */
         .heart { position: fixed; top: -10vh; user-select: none; z-index: 50; pointer-events: none; animation: fall linear forwards; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
         
@@ -76,43 +79,43 @@
 </head>
 <body>
 
-    <audio id="loveSong" preload="auto" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3"></audio>
+    <audio id="loveSong" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3"></audio>
 
     <div id="container">
         <div id="locked-section">
-            <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style="width:100px;" alt="Waiting...">
+            <img src="https://lh3.googleusercontent.com/u/0/d/1yxq2_-mzsyuxAFKjzxpgo07BBNas0sLQ" style="width:100px;" alt="Waiting...">
             <h2>Hey Manasa, something special is waiting for you...</h2>
             <p id="lock-text">This page will unlock exactly on Valentine's Day. Stay tuned, Potti! ❤️</p>
             <button id="open-btn" onclick="unlockProposal()">Open Your Surprise 🎁</button>
         </div>
 
         <div id="quiz-section">
-            <img src="https://via.placeholder.com/350x350?text=Our+Photo+Here" id="main-photo" alt="Our Photo">
+            <img src="https://lh3.googleusercontent.com/u/0/d/1WxJo233oWCC5Wup5hq6utKXbu7k0WRF0" id="main-photo" alt="Our Photo">
             <h1>Manasa, Will you be my Valentine? 💖</h1>
             <div class="buttons">
                 <button id="yesBtn" onclick="startCelebration()">Yes</button>
-                <button id="noBtn" onmouseover="moveNo()" onclick="moveNo()">No</button>
+                <button id="noBtn" onmouseover="moveNo()">No</button>
             </div>
         </div>
 
         <div id="celebration" class="celebration">
-            <h1>YAY! I love you! 🥰</h1>
-            <img src="https://via.placeholder.com/350x350?text=Happy+Photo+Here" style="width:100%" alt="Happy Celebration">
+            <h1>YAY! I love you! Simran 🥰</h1>
+            <img src="https://lh3.googleusercontent.com/u/0/d/1RsiFKMo0Gawt8IHO6bUI9fxrJ7fDT_0G" style="width:100%" alt="Happy Celebration">
             <div id="final-msg">I Love You Forever!❤️</div>
             <h2 id="valentine-wish" style="color:#ff4d6d; margin-top:20px; display:none;">Happy Valentines Day Dear Potti❤️</h2>
         </div>
     </div>
 
-    <div id="timer-container">Calculating time...</div>
+    <div id="timer-container">Loading Countdown...</div>
 
     <script>
-        // COUNTDOWN LOGIC
         function updateStatus() {
             const valentinesDay = new Date("Feb 14, 2026 00:00:00").getTime();
             const now = new Date().getTime();
             const diff = valentinesDay - now;
 
             if (diff <= 0) {
+                // IT IS TIME!
                 document.getElementById("timer-container").style.display = "none";
                 document.getElementById("lock-text").innerHTML = "The wait is over! Click below:";
                 document.getElementById("open-btn").style.display = "inline-block";
@@ -125,47 +128,37 @@
             }
         }
         setInterval(updateStatus, 1000);
-        updateStatus();
 
         function unlockProposal() {
             document.getElementById("locked-section").style.display = "none";
             document.getElementById("quiz-section").style.display = "block";
         }
 
-        // IMPROVED "NO" BUTTON BEHAVIOR
         function moveNo() {
             const btn = document.getElementById('noBtn');
-            const padding = 50;
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth - padding);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight - padding);
-            
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
             btn.style.position = 'fixed';
             btn.style.left = x + 'px';
             btn.style.top = y + 'px';
         }
 
-        // CELEBRATION LOGIC
         function startCelebration() {
             document.getElementById('quiz-section').style.display = 'none';
             document.getElementById('celebration').style.display = 'block';
+            document.getElementById('loveSong').play();
             
-            // Audio Playback
-            const audio = document.getElementById('loveSong');
-            audio.play().catch(e => console.log("Audio play delayed until interaction"));
-            
-            // Create falling hearts
             for(let i = 0; i < 150; i++) {
                 setTimeout(createHeart, i * 40);
             }
 
-            // Show final message
             setTimeout(() => {
                 const msg = document.getElementById('final-msg');
                 const wish = document.getElementById('valentine-wish');
                 msg.style.display = 'block';
                 wish.style.display = 'block';
                 setTimeout(() => { msg.style.opacity = '1'; }, 100);
-            }, 2000);
+            }, 4000);
         }
 
         function createHeart() {
